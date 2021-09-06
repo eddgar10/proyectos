@@ -1,0 +1,54 @@
+PARA ISO W10-21H1SPANISH
+*******************************************************
+BLOQUEO DE APLICACIONES PREDETERMINADAS: 
+HKEY_CURRENT_USER\software\microsoft\windows\currentVersion\Policies
+
+policies -> clic derecho nueva clave : Explorer
+dentro de Explorer clic derecho nuevo valodr DWORD 32BITS DisallowRun -> valor 1
+
+sobre Explorer-> clic derecho nueva clave: DisallowRun
+dentro de DisallowRun: clic derecho nuevo valor de cadena: 1 y aregrar el .exe | incrementos en 1
+
+notepad.exe
+wordpad.exe
+calc.exe
+mobsync.exe
+displayswitch.exe
+mstsc.exe
+SoundRecorder.exe
+mspaint.exe
+wordpad.exe
+magnify.exe
+narrator.exe
+sapisvr.exe
+msra.exe
+wmplayer.exe
+WFS.exe
+psr.exe
+SnippingTool.exe
+mip.exe
+mspaint.exe
+MicrosoftPhotos.exe
+Maps.exe
+wordpad.exe
+
+*******************************************************
+DESHABILITAR USB 
+
+KEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USBSTOR CLIC Y valor en 4 con valor 3 habilita
+*******************************************************
+
+
+DESISNTALAR DESDE PANEL DE CONTROL O MENU DE INICIO CON  CLIC DERECHO:
+assistencia rapida
+correo
+onedrive
+*******************************************************
+DESHABILITAR SERVICIOS DESDE MSCONFIG (para que no arranquen en el inicio):
+servicio de red de xbox live
+xbox accessor y management service
+juegos guardados en xbox live
+administrador de autenticacion de xbox live
+windows update
+security center
+administracion remota de windows

@@ -1,0 +1,113 @@
+sudo apt-get remove --auto-remove gedit -y; sudo apt-get purge evince -y; sudo apt-get purge eog -y; sudo apt-get remove --purge libreoffice* -y;  sudo apt-get remove openoffice*.* -y; sudo apt-get autoremove --purge rhythmbox -y; sudo apt-get remove shotwell -y; sudo apt autoremove -y; sudo snap remove gnome-calculator; sudo apt-get install unity-control-center -y; sudo apt-get remove gnome-screenshot -y; sudo chmod 000 /media; sudo apt install --reinstall gnome-control-center
+******************************************************************
+INSTRUCCIONES INDIVIDUALES:
+******************************************************************
+Desinstalar Calculadora(desde terminal con sesion sudo)
+sudo snap remove gnome-calculator
+******************************************************************
+(instalar aplicacion de configuración ubuntu 16 y 18)
+sudo apt-get install unity-control-center -y
+apt-get install gnome-control-center -y || gnome-control-center-data
+******************************************************************
+deshabilita usb: sudo chmod 000 /media
+habilita usb: sudo chmod 777 /media
+******************************************************************
+conexion ssh como administrador/sesion fisica como administrador
+deshabilitar/habilitar ICONO gnome terminal (sigue funcionando con crtl+alt+t)
+cd /usr/share/applications/
+sudo nano org.gnome.Terminal.desktop
+agregar linea: Hidden=true
+******************************************************************
+ocultar boton de aplicaciones (valores true/false se realiza desde la sesion a aplicar no requiere privilegios sudo):
+gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
+******************************************************************
+ocultar acceso directo de carpeta home y trash desktop (ubuntu18 valores true/false se realiza desde la sesion a aplicar no requiere privilegios sudo):
+gsettings set org.gnome.nautilus.desktop trash-icon-visible false; gsettings set org.gnome.nautilus.desktop home-icon-visible false
+******************************************************************
+Desactivar acceso directo de tecla boton captura de pantalla (se realiza desde la sesion a aplicar no require privilegios sudo se restablece desde gnome grafico re-asignando la tecla )
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot 'Disabled'
+
+******************************************************************
+
+******************************************************************
+samba monitor (via ssh hacia el servidor anfitrion con permisos sudo):
+sudo watch smbstatus
+******************************************************************
+
+******************************************************************
+
+CONTROL BRILLO GNOME
+https://askubuntu.com/questions/1036039/where-are-the-brightness-controls
+
+sudo add-apt-repository ppa:apandada1/brightness-controller
+sudo apt update
+sudo apt install brightness-controller -y
+
+CONTROL BRILLO TERMINAL
+https://vitux.com/control-screen-brightness-from-ubuntu-terminal/
+
+conocer nombre de monitor :  xrandr | grep " connected" | cut -f1 -d " "
+xrandr--output nombre_monitor --brightness 0.x <-[0-1]
+
+******************************************************************
+
+NAVEGADORES
+# Install
+# via http://askubuntu.com/questions/510056/how-to-install-google-chrome
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt-get update 
+sudo apt-get install google-chrome-stable
+sudo apt install chromium-browser
+
+# Update navegadores
+sudo apt-get update; sudo apt-get --only-upgrade install google-chrome-stable; sudo apt-get install --only-upgrade firefox; sudo apt-get clean; sudo apt autoremove -y;
+
+******************************************************************
+
+CARACTERISTICAS DEL EQUIPO VIA TERMINAL
+
+HDD o SSD:
+hdd= 1 o ssd= 0
+cat /sys/block/sda/queue/rotational
+
+PROCESADOR: 
+lscpu
+
+TARJETA:
+sudo dmidecode -t baseboard
+
+******************************************************************
+
+NOTIFICACION VIA SSH se realiza hacia la cuenta que tiene la sesion activa sea administrador o inivtado
+ssh user@host 'DISPLAY=:0 notify-send "TEST MESSAGE."'
+
+******************************************************************
+
+NOTIFICACION DE SONIDOS (PUEDE PROGRAMARSE EN CRONTAB SOBRE LA SESION A EJECUTAR INVITADO O ADMIN, EL DIRECTORIO SOUND-ICONS CONTIENE LOS AUDIOS)
+https://askubuntu.com/questions/19906/beep-in-shell-script-not-working
+paplay /usr/share/sounds/sound-icons/hash
+
+******************************************************************
+
+SONIDO NO FUNCIONA EN NAVEGADOR (PASSA PRUEBA DE SONIDO EN CONFIGURACION PERO EN NAVEGADOR U OTRA APLICACION NO)
+probar sonido en youtube u otro enlace donde reproduzca sonido, si no reproduce realizar la reinstalacion de controladores de sonido:
+
+sudo apt-get --purge remove linux-sound-base alsa-base alsa-utils
+sudo apt-get install linux-sound-base alsa-base alsa-utils
+
+******************************************************************
+
+BLOQUEO DE PANTALLA (SE EJECUTA DESDE SESION ACTUAL SUDO O INVITADO)
+xdg-screensaver lock
+
+******************************************************************
+
+FONDO DE PANTALLA y BLOQUEO DESDE TERMINAL (SE EJECUTA DESDE SESION ACTUAL SUDO O INVITADO)
+/usr/share/backgrounds <- ubicacion de imagenes default
+gsettings set org.gnome.desktop.background picture-uri file:///usr/share/backgrounds/Beaver_Wallpaper_Grey_4096x2304.png <- imagen de fondo
+gsettings set org.gnome.desktop.screensaver picture-uri file:///usr/share/backgrounds/Beaver_Wallpaper_Grey_4096x2304.png <- imagen pantalla bloqueada
+
+******************************************************************
+REMOVER IMAGENES DEJANDO SOLAMENTE 1 PARA DIR /usr/share/backgrounds (DESDE SESION SUDO)
+sudo rm Beaver_Wallpaper_Grey_4096x2304.png; sudo rm Cathédrale_Marie-Rheine-du-Monde_by_Thierry_Pon.jpg; sudo rm Crocus_Wallpaper_by_Roy_Tanck.jpg; sudo rm Definitive_Light_Zen_Orange_by_Pierre_Cante.jpg; sudo rm El_Haouaria_by_Nusi_Nusi.jpg; sudo rm Halifax_Sunset_by_Vlad_Drobinin.jpg; sudo rm Manhattan_Sunset_by_Giacomo_Ferroni.jpg; sudo rm On_top_of_the_Rubihorn_by_Matthias_Niess.jpg; sudo rm Raindrops_On_The_Table_by_Alex_Fazit.jpg; sudo rm 'Ross_Jones_Rockpool_(Sydney)_by_Chris_Carignan.jpg'; sudo rm Spices_in_Athens_by_Makis_Chourdakis.jpg; sudo rm This_Is_Bionic_Beaver_by_Pierre_Cante.jpg; sudo rm ubuntu-default-greyscale-wallpaper.png; sudo rm Wall_with_door_on_Gozo_by_Matthias_Niess.jpg; sudo rm warty-final-ubuntu.png; sudo rm -r gnome/*; sudo rm -r /home/administrador/Imágenes/Wallpapers/*
