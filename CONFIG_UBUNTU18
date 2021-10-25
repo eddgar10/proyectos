@@ -1,5 +1,18 @@
 sudo apt-get remove --auto-remove gedit -y; sudo apt-get purge evince -y; sudo apt-get purge eog -y; sudo apt-get remove --purge libreoffice* -y;  sudo apt-get remove openoffice*.* -y; sudo apt-get autoremove --purge rhythmbox -y; sudo apt-get remove shotwell -y; sudo apt autoremove -y; sudo snap remove gnome-calculator; sudo apt-get install unity-control-center -y; sudo apt-get remove gnome-screenshot -y; sudo chmod 000 /media; sudo apt install --reinstall gnome-control-center
 ******************************************************************
+
+ANYDESK INSTLAL TERMINAL
+
+INSTALACION EN 1 SOLA LINEA DE COMANDOS (INSTRUCCIONES SEPARADAS POR ;)
+wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | sudo apt-key add -; echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk-stable.list; sudo apt install anydesk -y;
+
+ELIMINACION DE ANYDESK (como administrador):
+
+sudo apt-get purge anydesk -y
+sudo apt-get autoclean
+sudo apt-get autoremove
+
+
 INSTRUCCIONES INDIVIDUALES:
 ******************************************************************
 Desinstalar Calculadora(desde terminal con sesion sudo)
@@ -28,12 +41,36 @@ Desactivar acceso directo de tecla boton captura de pantalla (se realiza desde l
 gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot 'Disabled'
 
 ******************************************************************
+REDIRECCIONAMIENTO A LOCAL PARA BUSCADOR google.com desde terminal con sesion sudo
 
+sudo nano /etc/hosts
+
+agregar:
+127.0.0.1	google.com
+
+guardar
+!!para volver a dar acceso se comenta o elimina la linea en cada equipo esto es independiente al balanceador
+******************************************************************
+USB no permite hacer copia de datos porque el sistema de archivos es de solo lectura:
+https://www.alvarolara.com/2014/11/20/solucionar-pendrive-en-modo-solo-lectura-en-gnulinux/
+Instalar dosfstools
+
+sudo apt-get install dosfstools
+
+Para conocer en qué punto de montaje está el pendrive, ejecutamos:
+
+df -h
+
+Después desmontamos el fichero de archivos, en mi caso /dev/sde1:
+
+sudo umount /dev/sde1
+
+Una vez listo ejecutamos la utilidad dosfsck con los siguientes argumentos para comprobar y reparar el dispositivo.
+
+sudo dosfsck -t -a -w /dev/sde1
 ******************************************************************
 samba monitor (via ssh hacia el servidor anfitrion con permisos sudo):
 sudo watch smbstatus
-******************************************************************
-
 ******************************************************************
 
 CONTROL BRILLO GNOME
@@ -77,8 +114,12 @@ lscpu
 TARJETA:
 sudo dmidecode -t baseboard
 
+año de fabricacion tarjeta:
+sudo dmidecode | grep 'Date'
 ******************************************************************
-
+HISTORIAL DE TERMINAL (EJECUTA SOBRE LA SESION A LIMPIAR)
+history -c && history -w
+******************************************************************
 NOTIFICACION VIA SSH se realiza hacia la cuenta que tiene la sesion activa sea administrador o inivtado
 ssh user@host 'DISPLAY=:0 notify-send "TEST MESSAGE."'
 
@@ -101,6 +142,22 @@ sudo apt-get install linux-sound-base alsa-base alsa-utils
 BLOQUEO DE PANTALLA (SE EJECUTA DESDE SESION ACTUAL SUDO O INVITADO)
 xdg-screensaver lock
 
+REPRODUCCION DE SONIDO (SE EJECUTA DESDE SESION ACTUAL SUDO O INVITADO)
+paplay /usr/share/sounds/sound-icons/capital
+
+******************************************************************
+lanzador del menu de apagado desde sesion en la que se desea ejecutar sudo o invitado
+gnome-session-quit --power-off
+
+******************************************************************
+ocultar texto de inicio del kernel y ubuntu boot al encender equipo
+editar: /etc/default/grub
+
+GRUB_CMDLINE_LINUX_DEFAULT=quiet   #Don't show Ubuntu bootup text
+GRUB_CMDLINE_LINUX="console=tty12" #Don't show kernel text
+
+sudo update-grub
+
 ******************************************************************
 
 FONDO DE PANTALLA y BLOQUEO DESDE TERMINAL (SE EJECUTA DESDE SESION ACTUAL SUDO O INVITADO)
@@ -111,3 +168,298 @@ gsettings set org.gnome.desktop.screensaver picture-uri file:///usr/share/backgr
 ******************************************************************
 REMOVER IMAGENES DEJANDO SOLAMENTE 1 PARA DIR /usr/share/backgrounds (DESDE SESION SUDO)
 sudo rm Beaver_Wallpaper_Grey_4096x2304.png; sudo rm Cathédrale_Marie-Rheine-du-Monde_by_Thierry_Pon.jpg; sudo rm Crocus_Wallpaper_by_Roy_Tanck.jpg; sudo rm Definitive_Light_Zen_Orange_by_Pierre_Cante.jpg; sudo rm El_Haouaria_by_Nusi_Nusi.jpg; sudo rm Halifax_Sunset_by_Vlad_Drobinin.jpg; sudo rm Manhattan_Sunset_by_Giacomo_Ferroni.jpg; sudo rm On_top_of_the_Rubihorn_by_Matthias_Niess.jpg; sudo rm Raindrops_On_The_Table_by_Alex_Fazit.jpg; sudo rm 'Ross_Jones_Rockpool_(Sydney)_by_Chris_Carignan.jpg'; sudo rm Spices_in_Athens_by_Makis_Chourdakis.jpg; sudo rm This_Is_Bionic_Beaver_by_Pierre_Cante.jpg; sudo rm ubuntu-default-greyscale-wallpaper.png; sudo rm Wall_with_door_on_Gozo_by_Matthias_Niess.jpg; sudo rm warty-final-ubuntu.png; sudo rm -r gnome/*; sudo rm -r /home/administrador/Imágenes/Wallpapers/*
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+COMANDOS UBUNTU 18 PARA EQUIPOS TELCEL ISO 18.04 DENTRO DE CUBIC (ISO PERSONALIZADA)
+#0 NO USA GUINES BAJOS PARA LA PRIMERA CONFIGURACION DEL NOMBRE DEL SO ubuntu x.x.x EEO Telcel SERVEI
+#1 eliminacion de software predeterminado y deshabilita usb
+sudo apt-get remove --auto-remove gedit -y; sudo apt-get purge evince -y; sudo apt-get purge eog -y; sudo apt-get remove --purge libreoffice* -y;  sudo apt-get remove openoffice*.* -y; sudo apt-get autoremove --purge rhythmbox -y; sudo apt-get remove shotwell -y; sudo apt autoremove -y; sudo snap remove gnome-calculator; sudo apt-get install unity-control-center -y; sudo apt-get remove gnome-screenshot -y; sudo chmod 000 /media; sudo apt install --reinstall gnome-control-center; sudo apt-get purge  sudo apt-get update; sudo apt-get upgrade -y; 
+
+#2 instalacion de navegadore chrome 
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - ; sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'; sudo apt-get update; sudo apt-get install google-chrome-stable;
+
+#4 REMOVER IMAGENES DEJANDO SOLAMENTE 1 PARA DIR /usr/share/backgrounds (DESDE SESION SUDO)
+cd /usr/share/backgrounds
+sudo rm Beaver_Wallpaper_Grey_4096x2304.png; sudo rm Cathédrale_Marie-Rheine-du-Monde_by_Thierry_Pon.jpg; sudo rm Crocus_Wallpaper_by_Roy_Tanck.jpg; sudo rm Definitive_Light_Zen_Orange_by_Pierre_Cante.jpg; sudo rm El_Haouaria_by_Nusi_Nusi.jpg; sudo rm Halifax_Sunset_by_Vlad_Drobinin.jpg; sudo rm Manhattan_Sunset_by_Giacomo_Ferroni.jpg; sudo rm On_top_of_the_Rubihorn_by_Matthias_Niess.jpg; sudo rm Raindrops_On_The_Table_by_Alex_Fazit.jpg; sudo rm 'Ross_Jones_Rockpool_(Sydney)_by_Chris_Carignan.jpg'; sudo rm Spices_in_Athens_by_Makis_Chourdakis.jpg; sudo rm This_Is_Bionic_Beaver_by_Pierre_Cante.jpg; sudo rm ubuntu-default-greyscale-wallpaper.png; sudo rm Wall_with_door_on_Gozo_by_Matthias_Niess.jpg; sudo rm warty-final-ubuntu.png;
+
+#4.1 INSTALACION SERVICIO SSH
+sudo apt-get install openssh-server -y; sudo ufw allow ssh
+
+#custom about details
+sudo nano /etc/os-release
+NAME="Ubuntu SERVEI Telcel"
+VERSION="18.04.5 v1 LTS EEO custom"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04 EEO Teslcel SERVEI"
+VERSION_ID="18.04 v1"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=bionic
+UBUNTU_CODENAME=bionic
+
+#5 paquetes a eliminar en typical y minimal install !lo marcado en minimal se marca en typical! 
+
+
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+#post instalacion desde cuenta administrador este archivo lo colocaremos dentro de opt para aplicar los siguientes cambios: 
+
+
+#controlador de brillo
+sudo add-apt-repository ppa:apandada1/brightness-controller; sudo apt update; sudo apt install brightness-controller -y
+
+#configuracion de archivos hosts para restringir accesos independiente de que exista un firewall en la LAN
+sudo vim /etc/hosts
+
+#google.com
+        #first, let's redirect English google.com search to Startpage
+	#} redirects to us2.startpage.com:443
+        216.218.239.164 www.google.com   #} 216.218.239.164 is the IP address for the
+        216.218.239.164 google.ca        #} Google frontend Startpage and automatically
+        216.218.239.164 www.google.ca    #} switches to https (443), even if http (80)
+        216.218.239.164 google.co.uk     #} is specified. SP is much more secure a
+        216.218.239.164 www.google.co.uk #} search engine and far more privacy-friendly
+        216.218.239.164 google.ie        #} than Google itself could ever hope to be.
+        216.218.239.164 www.google.ie    #}
+        #various other G services - main pages
+        127.0.0.1 accounts.google.com #} comment out if you need to use G-mail
+        127.0.0.1 mail.google.com     #}
+        127.0.0.1 gmail.com           #} 
+        127.0.0.1 www.gmail.com       #}
+        127.0.0.1 sites.google.com
+        127.0.0.1 code.google.com
+        127.0.0.1 maps.google.com
+        127.0.0.1 groups.google.com #} real Usenetters don't use Google Groups
+        127.0.0.1 gg.google.com     #}
+        127.0.0.1 plusone.google.com
+        127.0.0.1 fusion.google.com
+        127.0.0.1 plus.google.com
+        127.0.0.1 goog.le
+#facebookipv4
+	0.0.0.0 www.facebook.com
+	0.0.0.0 static.ak.fbcdn.net
+	0.0.0.0 www.static.ak.fbcdn.net
+	0.0.0.0 login.facebook.com
+	0.0.0.0 www.login.facebook.com
+	0.0.0.0 fbcdn.net
+	0.0.0.0 www.fbcdn.net
+	0.0.0.0 fbcdn.com
+	0.0.0.0 www.fbcdn.com
+	0.0.0.0 static.ak.connect.facebook.com
+	0.0.0.0 www.static.ak.connect.facebook.com
+#facebookipv6	
+	fe80::1%lo0 facebook.com
+	fe80::1%lo0 login.facebook.com
+	fe80::1%lo0 www.login.facebook.com
+	fe80::1%lo0 fbcdn.net
+	fe80::1%lo0 www.fbcdn.net
+	fe80::1%lo0 fbcdn.com
+	fe80::1%lo0 www.fbcdn.com
+	fe80::1%lo0 static.ak.fbcdn.net
+	fe80::1%lo0 static.ak.connect.facebook.com
+	fe80::1%lo0 connect.facebook.net
+	fe80::1%lo0 www.connect.facebook.net
+	fe80::1%lo0 apps.facebook.com	
+#twitter	
+	0.0.0.0 www.twitter.com
+	0.0.0.0 www.twittter.com
+	0.0.0.0 www.twttr.com
+	0.0.0.0 www.twitter.fr
+	0.0.0.0 www.twitter.jp
+	0.0.0.0 www.twitter.rs
+	0.0.0.0 www.twitter.uz
+	0.0.0.0 twitter.biz
+	0.0.0.0 twitter.dk
+	0.0.0.0 twitter.events
+	0.0.0.0 twitter.ie
+	0.0.0.0 twitter.je
+	0.0.0.0 twitter.mobi
+	0.0.0.0 twitter.nu
+	0.0.0.0 twitter.pro
+	0.0.0.0 twitter.su
+	0.0.0.0 twitter.vn
+	0.0.0.0 twitter.com
+	0.0.0.0 *.twitter.com
+	0.0.0.0 twitter.gd
+	0.0.0.0 twitter.im
+	0.0.0.0 twitter.hk
+	0.0.0.0 twitter.jp
+	0.0.0.0 twitter.ch
+	0.0.0.0 twitter.pt
+	0.0.0.0 twitter.rs
+	0.0.0.0 www.twitter.com.br
+	0.0.0.0 twitter.ae
+	0.0.0.0 twitter.eus
+	0.0.0.0 twitter.hk
+	0.0.0.0 ns1.p34.dynect.net
+	0.0.0.0 ns2.p34.dynect.net
+	0.0.0.0 ns3.p34.dynect.net
+	0.0.0.0 ns4.p34.dynect.net
+	0.0.0.0 d01-01.ns.twtrdns.net
+	0.0.0.0 d01-02.ns.twtrdns.net
+	0.0.0.0 a.r06.twtrdns.net
+	0.0.0.0 b.r06.twtrdns.net
+	0.0.0.0 c.r06.twtrdns.net
+	0.0.0.0 d.r06.twtrdns.net
+	0.0.0.0 api-34-0-0.twitter.com
+	0.0.0.0 api-47-0-0.twitter.com
+	0.0.0.0 cheddar.twitter.com
+	0.0.0.0 goldenglobes.twitter.com
+	0.0.0.0 mx003.twitter.com
+	0.0.0.0 pop-api.twitter.com
+	0.0.0.0 spring-chicken-an.twitter.com
+	0.0.0.0 spruce-goose-ae.twitter.com
+	0.0.0.0 takeflight.twitter.com
+	0.0.0.0 www2.twitter.com
+	0.0.0.0 m.twitter.com
+	0.0.0.0 mobile.twitter.com
+#spotify
+	0.0.0.0 weblb-wg.gslb.spotify.com
+	0.0.0.0 prod.b.ssl.us-eu.fastlylb.net 
+#youtube
+	0.0.0.0	host.youtube.com
+	0.0.0.0	mx.youtube.com
+	0.0.0.0	admin.youtube.com
+	0.0.0.0	devel.youtube.com
+	0.0.0.0	stats.youtube.com
+	0.0.0.0	http.youtube.com
+	0.0.0.0	mx0.youtube.com
+	0.0.0.0	administration.youtube.com
+	0.0.0.0	development.youtube.com
+	0.0.0.0	svn.youtube.com
+	0.0.0.0	id.youtube.com
+	0.0.0.0	mx1.youtube.com
+	0.0.0.0	ads.youtube.com
+	0.0.0.0	devsql.youtube.com
+	0.0.0.0	syslog.youtube.com
+	0.0.0.0	adserver.youtube.com
+	0.0.0.0	images.youtube.com
+	0.0.0.0	mysql.youtube.com
+	0.0.0.0	devtest.youtube.com
+	0.0.0.0	info.youtube.com
+	0.0.0.0	news.youtube.com
+	0.0.0.0	alerts.youtube.com
+	0.0.0.0	dhcp.youtube.com
+	0.0.0.0	test1.youtube.com
+	0.0.0.0	internal.youtube.com
+	0.0.0.0	noc.youtube.com
+	0.0.0.0	alpha.youtube.com
+	0.0.0.0	direct.youtube.com
+	0.0.0.0	test2.youtube.com
+	0.0.0.0	internet.youtube.com
+	0.0.0.0	ns.youtube.com
+	0.0.0.0	ap.youtube.com
+	0.0.0.0	dmz.youtube.com
+	0.0.0.0	testing.youtube.com
+	0.0.0.0	intra.youtube.com
+	0.0.0.0	ns0.youtube.com
+	0.0.0.0	apache.youtube.com
+	0.0.0.0	dns.youtube.com
+	0.0.0.0	upload.youtube.com
+	0.0.0.0	intranet.youtube.com
+	0.0.0.0	ns1.youtube.com
+	0.0.0.0	app.youtube.com
+	0.0.0.0	dns0.youtube.com
+	0.0.0.0	vm.youtube.com
+	0.0.0.0	ipv6.youtube.com
+	0.0.0.0	ns2.youtube.com
+	0.0.0.0	apps.youtube.com
+	0.0.0.0	dns1.youtube.com
+	0.0.0.0	vnc.youtube.com
+	0.0.0.0	lab.youtube.com
+	0.0.0.0	ns3.youtube.com
+	0.0.0.0	appserver.youtube.com
+	0.0.0.0	dns2.youtube.com
+	0.0.0.0	ldap.youtube.com
+	0.0.0.0	aptest.youtube.com
+	0.0.0.0	download.youtube.com
+	0.0.0.0	vpn.youtube.com
+	0.0.0.0	linux.youtube.com
+	0.0.0.0	ops.youtube.com
+	0.0.0.0	auth.youtube.com
+	0.0.0.0	en.youtube.com
+	0.0.0.0	web.youtube.com
+	0.0.0.0	local.youtube.com
+	0.0.0.0	oracle.youtube.com
+	0.0.0.0	backup.youtube.com
+	0.0.0.0	erp.youtube.com
+	0.0.0.0	web2test.youtube.com
+	0.0.0.0	log.youtube.com
+	0.0.0.0	owa.youtube.com
+	0.0.0.0	beta.youtube.com
+	0.0.0.0	eshop.youtube.com
+	0.0.0.0	whois.youtube.com
+	0.0.0.0	pbx.youtube.com	
+	0.0.0.0	blog.youtube.com
+	0.0.0.0	exchange.youtube.com
+	0.0.0.0	wiki.youtube.com
+	0.0.0.0	www.youtube.com
+	0.0.0.0	s3.youtube.com
+	0.0.0.0	f5.youtube.com
+	0.0.0.0	secure.youtube.com
+	0.0.0.0	chat.youtube.com
+	0.0.0.0	fileserver.youtube.com
+	0.0.0.0	www2.youtube.com
+	0.0.0.0	server.youtube.com
+	0.0.0.0	citrix.youtube.com
+	0.0.0.0	firewall.youtube.com
+	0.0.0.0	xml.youtube.com
+	0.0.0.0	main.youtube.com
+	0.0.0.0	shop.youtube.com
+	0.0.0.0	cms.youtube.com
+	0.0.0.0	forum.youtube.com
+	0.0.0.0	manage.youtube.com
+	0.0.0.0	sip.youtube.com
+	0.0.0.0	corp.youtube.com
+	0.0.0.0	mgmt.youtube.com
+	0.0.0.0	crs.youtube.com
+	0.0.0.0	mirror.youtube.com
+	0.0.0.0	sql.youtube.com
+	0.0.0.0	cvs.youtube.com
+	0.0.0.0	git.youtube.com
+	0.0.0.0	mobile.youtube.com
+	0.0.0.0	squid.youtube.com
+	0.0.0.0	database.youtube.com
+	0.0.0.0	gw.youtube.com
+	0.0.0.0	help.youtube.com
+	0.0.0.0	monitor.youtube.com
+	0.0.0.0	ssh.youtube.com
+	0.0.0.0	db.youtube.com
+	0.0.0.0	mssql.youtube.com
+	0.0.0.0	ssl.youtube.com
+	0.0.0.0	demo.youtube.com
+	0.0.0.0	helpdesk.youtube.com
+	0.0.0.0	mta.youtube.com
+	0.0.0.0	dev.youtube.com
+	0.0.0.0	home.youtube.com
+
+#creando usuario con permisos estandar:
+#sustituir xx con el numero del equipo 01,04,10,32 etc
+sudo useradd -m	 SERVEI00XX
+sudo passwd SERVEI00XX
+
+#configurando crontab para eliminacion de archivos en directorios y programacion de apagado
+#sustituir XX por el numero del equipo 01,02,20 etc
+sudo crontab -e
+05 18 * * * /sbin/shutdown -h now
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Descargas/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Escritorio/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Imágenes/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Música/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Plantillas/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Público/*
+00 9,10,11,12,13,14,15,16,17 * * * sudo rm -r /home/SERVEI00XX/Vídeos/*
+
+###cambiar a la nueva sesion del usuario SERVEI00XX via ssh para aplicar la siguiente config###
+
+#ocultar boton de aplicaciones (valores true/false se realiza desde la sesion a aplicar no requiere privilegios sudo):
+gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
+
+#ocultar acceso directo de carpeta home y trash desktop (ubuntu18 valores true/false se realiza desde la sesion a aplicar no requiere privilegios sudo):
+gsettings set org.gnome.nautilus.desktop trash-icon-visible false; gsettings set org.gnome.nautilus.desktop home-icon-visible false
+
+#Desactivar acceso directo de tecla boton captura de pantalla (se realiza desde la sesion a aplicar no require privilegios sudo se restablece desde gnome grafico re-asignando la tecla )
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot 'Disabled'
